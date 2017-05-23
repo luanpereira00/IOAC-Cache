@@ -31,8 +31,18 @@ public:
 	void setSubstituicao(unsigned short int s);
 	void setEscrita(unsigned short int e);
 
-	short int solicitarEndereco();
+
+	
 	void mainCache();
+
+	short int solicitarEndereco();
+
+	unsigned short int memPalavras();
+	
+	unsigned short int viasCache(unsigned short int end);
+	unsigned short int mapeamentoCache(unsigned short int end);
+	unsigned short int substituicaoCache(unsigned short int end);
+	unsigned short int calcBlocoPrincipal(unsigned short int end);
 };
 
 

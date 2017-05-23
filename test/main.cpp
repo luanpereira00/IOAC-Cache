@@ -31,5 +31,6 @@ int main (){
 
 	dados.mainCache();
 
+	cout << "Encerrando simulador..." << endl;
 	return 0;
 }

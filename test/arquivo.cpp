@@ -12,8 +12,10 @@ using std::string;
 using std::ifstream;
 
 #include <cstdlib>
+using std::exit;
 
 #include "arquivo.h"
+#include "cache.h"
 
 void abrirArquivo(ifstream *arquivo){
 	string arq;
@@ -32,27 +34,27 @@ void abrirArquivo(ifstream *arquivo){
 
 }
 
-void loadData(Data* dados, ifstream* arquivo){
+void loadData(Cache* dados, ifstream* arquivo){
 	string aux;
 
 	getline(*arquivo, aux);
-	dados->qtdPalavras = atoi(aux.c_str());
+	dados->setPalavras(atoi(aux.c_str()));
 
 	getline(*arquivo, aux);
-	dados->qtdLinhas = atoi(aux.c_str());
+	dados->setLinhas(atoi(aux.c_str()));
 
 	getline(*arquivo, aux);
-	dados->memPrincipal = atoi(aux.c_str());
+	dados->setPrincipal(atoi(aux.c_str()));
 
 	getline(*arquivo, aux);
-	dados->mapeamento = atoi(aux.c_str());
+	dados->setMapeamento(atoi(aux.c_str()));
 
 	getline(*arquivo, aux);
-	dados->vias = atoi(aux.c_str());
+	dados->setVias(atoi(aux.c_str()));
 
 	getline(*arquivo, aux);
-	dados->polSubstituicao = atoi(aux.c_str());
+	dados->setSubstituicao(atoi(aux.c_str()));
 
 	getline(*arquivo, aux);
-	dados->polEscrita = atoi(aux.c_str());
+	dados->setEscrita(atoi(aux.c_str()));
 }

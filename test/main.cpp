@@ -10,23 +10,24 @@ using std::string;
 using std::ifstream;
 
 #include "arquivo.h"
+#include "cache.h"
 
 int main (){
 	ifstream arquivo;
-	struct Data dados;
+	Cache dados;
 	abrirArquivo(&arquivo);
 
 	loadData(&dados, &arquivo);
 
 	arquivo.close();
 
-	cout << dados.qtdPalavras << endl;
-	cout << dados.qtdLinhas << endl;
-	cout << dados.memPrincipal << endl;
-	cout << dados.mapeamento << endl;
-	cout << dados.vias << endl;
-	cout << dados.polSubstituicao << endl;
-	cout << dados.polEscrita << endl;
+	cout << dados.getPalavras() << endl;
+	cout << dados.getLinhas() << endl;
+	cout << dados.getPrincipal() << endl;
+	cout << dados.getMapeamento() << endl;
+	cout << dados.getVias() << endl;
+	cout << dados.getSubstituicao() << endl;
+	cout << dados.getEscrita() << endl;
 
 	return 0;
 }

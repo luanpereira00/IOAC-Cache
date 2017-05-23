@@ -13,38 +13,39 @@ using std::exit;
 
 #include "cache.h"
 
-
-
 Cache::Cache(){
 	/** Faz nada */
 }
 Cache::~Cache(){
+	delete[] vetor;
 	/** Faz nada */
 }
 
-unsigned short int Cache::getPalavras()			{ return qtdPalavras;		}
-unsigned short int Cache::getLinhas()			{ return qtdLinhas;			}
-unsigned short int Cache::getPrincipal()		{ return memPrincipal;		}
-unsigned short int Cache::getMapeamento()		{ return mapeamento;		}
-unsigned short int Cache::getVias()				{ return vias;				}
-unsigned short int Cache::getSubstituicao()		{ return polSubstituicao;	}
-unsigned short int Cache::getEscrita()			{ return polEscrita;		}
+int Cache::getPalavras()			{ return qtdPalavras;		}
+int Cache::getLinhas()				{ return qtdLinhas;			}
+int Cache::getPrincipal()			{ return memPrincipal;		}
+int Cache::getMapeamento()			{ return mapeamento;		}
+int Cache::getVias()				{ return vias;				}
+int Cache::getSubstituicao()		{ return polSubstituicao;	}
+int Cache::getEscrita()				{ return polEscrita;		}
+int* Cache::getVetor()				{ return vetor;			}
 
-void Cache::setPalavras(unsigned short int p)		{ qtdPalavras = p; 		}
-void Cache::setLinhas(unsigned short int l)			{ qtdLinhas = l; 		}
-void Cache::setPrincipal(unsigned short int m)		{ memPrincipal = m; 	}
-void Cache::setMapeamento(unsigned short int mp)	{ mapeamento = mp; 		}
-void Cache::setVias(unsigned short int v)			{ vias = v; 			}
-void Cache::setSubstituicao(unsigned short int s)	{ polSubstituicao = s; 	}
-void Cache::setEscrita(unsigned short int e)		{ polEscrita = e; 		}
+void Cache::setPalavras(int p)		{ qtdPalavras = p; 		}
+void Cache::setLinhas(int l)		{ qtdLinhas = l; 		}
+void Cache::setPrincipal(int m)		{ memPrincipal = m; 	}
+void Cache::setMapeamento(int mp)	{ mapeamento = mp; 		}
+void Cache::setVias(int v)			{ vias = v; 			}
+void Cache::setSubstituicao(int s)	{ polSubstituicao = s; 	}
+void Cache::setEscrita(int e)		{ polEscrita = e; 		}
+void Cache::setVetor(int* vt)		{ vetor = vt; 			}
 
 
-unsigned short int Cache::memPalavras(){
+int Cache::memPalavras(){
 	return getPalavras()*getPrincipal();
 } 
 
-short int Cache::solicitarEndereco(){
-	short int end;
+int Cache::solicitarEndereco(){
+	int end;
 	cout << endl << "--- Simulador de Cache ---" << endl;
 	do{
 		cout << "Enderecos validos: " << 0 << " - " << memPalavras()-1 << endl;
@@ -59,7 +60,7 @@ short int Cache::solicitarEndereco(){
 	return end;
 }
 
-unsigned short int Cache::calcBlocoPrincipal(unsigned short int end){
+int Cache::calcBlocoPrincipal(int end){
 	return ((end - (end % getPalavras()))/getPalavras());
 }
 
@@ -73,10 +74,17 @@ void Cache::mainCache(){
 	}
 }
 //Mapeamento (1 – Direto; 2 – Totalmente Associativo; 3 – Parcialmente Associativo)
-unsigned short int Cache::mapeamentoCache(unsigned short int end){
+int Cache::mapeamentoCache(int end){
 	if(1==getMapeamento()){
 		cout << "Mapeamento Direto" << endl;
+		int* v = getVetor();
 
+		v[end % getLinhas()]=end;
+
+		for (int i=0; i<getLinhas(); i++) cout << v[i] << " ";
+		cout << endl;
+
+		setVetor(v);
 		//Sem Politica de Substituicao
 
 	} else if (2==getMapeamento()){
@@ -97,7 +105,7 @@ unsigned short int Cache::mapeamentoCache(unsigned short int end){
 }
 
 //Política de substituição (1 – Aleatório; 2 – FIFO; 3 – LFU; 4 – LRU)
-unsigned short int Cache::substituicaoCache(unsigned short int end){
+int Cache::substituicaoCache(int end){
 	if(1==getSubstituicao()){
 		cout << "Substituicao Aleatoria" << endl;
 		//Sem Politica de Substituicao
@@ -122,7 +130,7 @@ unsigned short int Cache::substituicaoCache(unsigned short int end){
 }
 
 //Num de conjuntos
-unsigned short int Cache::viasCache(unsigned short int end){
+int Cache::viasCache(int end){
 
 	if(getVias()>0){
 		cout << "Vias" << endl;

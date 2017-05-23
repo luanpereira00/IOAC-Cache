@@ -29,6 +29,10 @@ int main (){
 	cout << dados.getSubstituicao() << endl;
 	cout << dados.getEscrita() << endl;
 
+	int* v = new int[dados.getLinhas()];
+	for(int i=0; i<dados.getLinhas(); i++) v[i]=-1;
+
+	dados.setVetor(v);
 	dados.mainCache();
 
 	cout << "Encerrando simulador..." << endl;

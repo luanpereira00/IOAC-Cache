@@ -10,61 +10,49 @@ using std::string;
 
 #include "cache.h"
 
-int Cache::getPalavras(){
-	return qtdPalavras;
+Cache::Cache(){
+	/** Faz nada */
 }
-int Cache::getLinhas(){
-	return qtdLinhas;
-}
-int Cache::getPrincipal(){
-	return memPrincipal;
-}
-int Cache::getMapeamento(){
-	return mapeamento;
-}
-int Cache::getVias(){
-	return vias;
-}
-int Cache::getSubstituicao(){
-	return polSubstituicao;
-}
-int Cache::getEscrita(){
-	return polEscrita;
+Cache::~Cache(){
+	/** Faz nada */
 }
 
-void Cache::setPalavras(int p){ 
-	qtdPalavras = p; 
-}
-void Cache::setLinhas(int l){ 
-	qtdLinhas = l; 
-}
-void Cache::setPrincipal(int m){ 
-	memPrincipal = m; 
-}
-void Cache::setMapeamento(int mp){ 
-	mapeamento = mp; 
-}
-void Cache::setVias(int v){ 
-	vias = v; 
-}
-void Cache::setSubstituicao(int s){ 
-	polSubstituicao = s; 	
-}
-void Cache::setEscrita(int e){ 
-	polEscrita = e; 
-}
+unsigned short int Cache::getPalavras()	{ return qtdPalavras;	}
+unsigned short int Cache::getLinhas()		{ return qtdLinhas;		}
+unsigned short int Cache::getPrincipal()	{ return memPrincipal;	}
+unsigned short int Cache::getMapeamento()	{ return mapeamento;	}
+unsigned short int Cache::getVias()		{ return vias;			}
+unsigned short int Cache::getSubstituicao(){ return polSubstituicao;}
+unsigned short int Cache::getEscrita()		{ return polEscrita;	}
+
+void Cache::setPalavras(unsigned short int p)		{ qtdPalavras = p; 	}
+void Cache::setLinhas(unsigned short int l)		{ qtdLinhas = l; 	}
+void Cache::setPrincipal(unsigned short int m)		{ memPrincipal = m; }
+void Cache::setMapeamento(unsigned short int mp)	{ mapeamento = mp; 	}
+void Cache::setVias(unsigned short int v)			{ vias = v; 		}
+void Cache::setSubstituicao(unsigned short int s)	{ polSubstituicao = s; }
+void Cache::setEscrita(unsigned short int e)		{ polEscrita = e; 	}
 
 
-int Cache::solicitarEndereco(){
-	int end;
-	cout << "Digite o endereco a ser buscado: ";
-	cin >> end;
+short int Cache::solicitarEndereco(){
+	short int end;
+	cout << endl << "--- Simulador de Cache ---" << endl;
+	do{
+		cout << "Enderecos validos: " << 0 << " - " << getPalavras()*getPrincipal()-1 << endl;
+		cout << "Sair: -1" << endl;
+		cout << "Digite a opcao: ";
+		cin >> end;
+
+		if((end<-1 or end >= getPalavras()*getPrincipal())){
+			cerr << "Endereco errado! Tente novamente..." << endl;
+		}
+	}while(end<-1 or end >= getPalavras()*getPrincipal());
 	return end;
 }
 
-void Cache::initCache(){
-	int end;
-	while(end>0){ //MAX_ENDERECO_POSSIVEIS
+void Cache::mainCache(){
+	short int end=1;
+	while(end>=0 and end<getPalavras()*getPrincipal()){ //MAX_ENDERECO_POSSIVEIS
 		end = solicitarEndereco();
 	}
 }

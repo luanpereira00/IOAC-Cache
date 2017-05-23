@@ -3,35 +3,36 @@
 
 class Cache{ 
 private:
-	int qtdPalavras;
-	int qtdLinhas;
-	int memPrincipal;
-	int mapeamento;
-	int vias;
-	int polSubstituicao;
-	int polEscrita;
+	unsigned short int qtdPalavras;
+	unsigned short int qtdLinhas;
+	unsigned short int memPrincipal;
+	unsigned short int mapeamento;
+	unsigned short int vias;
+	unsigned short int polSubstituicao;
+	unsigned short int polEscrita;
 
 public:
+	Cache();
+	~Cache();
 
-	int getPalavras();
-	int getLinhas();
-	int getPrincipal();
-	int getMapeamento();
-	int getVias();
-	int getSubstituicao();
-	int getEscrita();
+	unsigned short int getPalavras();
+	unsigned short int getLinhas();
+	unsigned short int getPrincipal();
+	unsigned short int getMapeamento();
+	unsigned short int getVias();
+	unsigned short int getSubstituicao();
+	unsigned short int getEscrita();
 
-	void setPalavras(int p);
-	void setLinhas(int l);
-	void setPrincipal(int m);
-	void setMapeamento(int mp);
-	void setVias(int v);
-	void setSubstituicao(int s);
-	void setEscrita(int e);
+	void setPalavras(unsigned short int p);
+	void setLinhas(unsigned short int l);
+	void setPrincipal(unsigned short int m);
+	void setMapeamento(unsigned short int mp);
+	void setVias(unsigned short int v);
+	void setSubstituicao(unsigned short int s);
+	void setEscrita(unsigned short int e);
 
-
-	int solicitarEndereco();
-	void initCache();
+	short int solicitarEndereco();
+	void mainCache();
 };
 
 

@@ -29,5 +29,7 @@ int main (){
 	cout << dados.getSubstituicao() << endl;
 	cout << dados.getEscrita() << endl;
 
+	dados.mainCache();
+
 	return 0;
 }

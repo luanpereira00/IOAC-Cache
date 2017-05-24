@@ -45,6 +45,8 @@ public:
 
 	
 	void mainCache();
+	void exibirCache();
+	void exibirFreq();
 
 	int solicitarEndereco();
 

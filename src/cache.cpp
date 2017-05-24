@@ -54,6 +54,7 @@ int Cache::memPalavras(){
 
 int Cache::solicitarEndereco(){
 	int end;
+	cout << "===========================================" << endl;
 	cout << endl << "--- Simulador de Cache ---" << endl;
 	do{
 		cout << "Enderecos validos: " << 0 << " - " << memPalavras()-1 << endl;
@@ -100,11 +101,7 @@ int Cache::mapeamentoCache(int end){
 		}
 		mapeado = end % getLinhas();
 
-		for (int i=0; i<getLinhas(); i++) {
-			if(v[i]==-1) cout << "_ ";
-			else cout << v[i] << " ";
-		}
-		cout << endl;
+		exibirCache();
 
 		setVetor(v);
 		//Sem Politica de Substituicao
@@ -112,12 +109,8 @@ int Cache::mapeamentoCache(int end){
 	} else if (2==getMapeamento()){
 		cout << "Mapeamento Totalmente Associativo" << endl;
 		mapeado = substituicaoCache(end);
-		int* v = getVetor();
-		for (int i=0; i<getLinhas(); i++) {
-			if(v[i]==-1) cout << "_ ";
-			else cout << v[i] << " ";
-		}
-		cout << endl;
+		exibirCache();
+		exibirFreq();
 
 		//Com politica de substituicao
 
@@ -145,10 +138,14 @@ int Cache::substituicaoCache(int end){
 
 	for(int i=0; i<getLinhas(); i++){
 		if(v[i]==end){
-			cout << " -> Hit" << endl;
+			cout << endl << " -> --- HIT ---" << endl << endl;
 			setHit(getHit()+1);
 			if(3==getSubstituicao()){
 				f[i]++;
+				setFreq(f);
+			}
+			if(4==getSubstituicao()){
+				f[i]=0;
 				setFreq(f);
 			}
 			return i;
@@ -158,7 +155,7 @@ int Cache::substituicaoCache(int end){
 			aux=i;
 		}
 	}
-	cout << " -> Miss" << endl;
+	cout << endl << " -> --- MISS ---" << endl << endl;
 	setMiss(getMiss()+1);
 	if(freeFlag) {
 		v[aux]=end;
@@ -170,10 +167,10 @@ int Cache::substituicaoCache(int end){
 			}
 			setFreq(f);
 		}
-		if(3==getSubstituicao()){
+		if(3==getSubstituicao() or 4==getSubstituicao()){
 			f[aux]++;
 			setFreq(f);
-		}	
+		}
 		return aux;
 	} 
 	else {
@@ -230,7 +227,25 @@ int Cache::substituicaoCache(int end){
 			//Com politica de substituicao e Escrita
 
 		} else if (4==getSubstituicao()){
-			cout << "Substituicao LRU" << endl;
+			//cout << "Substituicao LRU" << endl;
+			aux=f[0];
+			int auxI=0;
+			for(int i=1; i<getLinhas(); i++){
+				if(aux<f[i]) {
+					aux=f[i];
+					auxI=i;
+				}
+			}
+			v[auxI]=end;
+			f[auxI]=0;
+			cout << "Frequencia de acesso: ";
+			for (int i=0; i<getLinhas(); i++) {
+				cout << f[i] << " ";
+			}
+			cout << endl;
+			setVetor(v);
+			setFreq(f);
+			return auxI;
 			//Com politica de substituicao e Escrita
 
 		}else {
@@ -255,4 +270,32 @@ int Cache::viasCache(int end){
 		exit(1);
 	}
 	return 0;
+}
+
+void Cache::exibirCache(){
+	int *v = getVetor();
+	cout << endl<< "Cache(BlocoPrincipal): [ ";
+	for (int i=0; i<getLinhas(); i++) {
+		if(v[i]==-1) cout << "_ ";
+		else cout << v[i] << " ";
+	}
+	cout << "] "<<endl;
+	cout << "Cache(BlocosDaCache):  [ ";
+	for (int i=0; i<getLinhas(); i++) {
+		cout << i << " ";
+	}
+	cout << "] "<<endl << endl;
+}
+void Cache::exibirFreq(){
+	int *f = getFreq();
+	cout << "Freq(BlocoCache): [ ";
+	for (int i=0; i<getLinhas(); i++) {
+		cout << f[i] << " ";
+	}
+	cout << "] "<<endl;
+	cout << "Freq(BlocoFreq):  [ ";
+	for (int i=0; i<getLinhas(); i++) {
+		cout << i << " ";
+	}
+	cout << "] "<<endl << endl;
 }

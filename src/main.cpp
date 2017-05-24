@@ -36,13 +36,18 @@ int main (){
 		v[i]=-1;
 		f[i]=0;
 	}
+	if(dados.getSubstituicao()==4) {
+		for(int i=0; i<dados.getLinhas(); i++) {
+			f[i]=dados.getSubstituicao();
+		}
+	}
 	dados.setVetor(v);
 	dados.setFreq(f);
 
 	dados.mainCache();
 	cout << "===========================================" << endl;
 
-	cout << "Hits:	-> " << dados.getHit() << endl;
+	cout << "Hit:	-> " << dados.getHit() << endl;
 	cout << "Miss: 	-> " << dados.getMiss() << endl;
 	cout << "Total:  -> " << dados.getHit()+dados.getMiss() << endl;
 	if(dados.getHit()+dados.getMiss()>0) {

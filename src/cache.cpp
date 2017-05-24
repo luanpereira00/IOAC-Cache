@@ -14,6 +14,8 @@ using std::exit;
 #include "cache.h"
 
 Cache::Cache(){
+	miss=0;
+	hit=0;
 	/** Faz nada */
 }
 Cache::~Cache(){
@@ -28,7 +30,9 @@ int Cache::getMapeamento()			{ return mapeamento;		}
 int Cache::getVias()				{ return vias;				}
 int Cache::getSubstituicao()		{ return polSubstituicao;	}
 int Cache::getEscrita()				{ return polEscrita;		}
-int* Cache::getVetor()				{ return vetor;			}
+int Cache::getHit()					{ return hit;				}
+int Cache::getMiss()				{ return miss;				}
+int* Cache::getVetor()				{ return vetor;				}
 
 void Cache::setPalavras(int p)		{ qtdPalavras = p; 		}
 void Cache::setLinhas(int l)		{ qtdLinhas = l; 		}
@@ -37,6 +41,8 @@ void Cache::setMapeamento(int mp)	{ mapeamento = mp; 		}
 void Cache::setVias(int v)			{ vias = v; 			}
 void Cache::setSubstituicao(int s)	{ polSubstituicao = s; 	}
 void Cache::setEscrita(int e)		{ polEscrita = e; 		}
+void Cache::setHit(int h)			{ hit = h;				}
+void Cache::setMiss(int ms)			{ miss = ms;			}
 void Cache::setVetor(int* vt)		{ vetor = vt; 			}
 
 
@@ -68,20 +74,34 @@ void Cache::mainCache(){
 	short int end=1;
 	while(end>=0 and end<getPalavras()*getPrincipal()){ //MAX_ENDERECO_POSSIVEIS
 		end = solicitarEndereco();
+		if(end==-1) return;
+		
 		cout << "Bloco da principal: " << calcBlocoPrincipal(end) << endl;
-
-		cout << "Mapeado em: " << mapeamentoCache(calcBlocoPrincipal(end)) << endl;
+		cout << "Mapeado no bloco " << mapeamentoCache(calcBlocoPrincipal(end)) << " da memoria cache" << endl;
 	}
 }
 //Mapeamento (1 – Direto; 2 – Totalmente Associativo; 3 – Parcialmente Associativo)
 int Cache::mapeamentoCache(int end){
+	int mapeado=-1;
 	if(1==getMapeamento()){
 		cout << "Mapeamento Direto" << endl;
 		int* v = getVetor();
 
-		v[end % getLinhas()]=end;
+		if(v[end % getLinhas()]==end) {
+			cout << "\tHit" << endl;
+			setHit(getHit()+1);
+		}
+		else {
+			cout << "\tMiss" << endl;
+			setMiss(getMiss()+1);
+			v[end % getLinhas()]=end;
+		}
+		mapeado=end % getLinhas();
 
-		for (int i=0; i<getLinhas(); i++) cout << v[i] << " ";
+		for (int i=0; i<getLinhas(); i++) {
+			if(v[i]==-1) cout << "_ ";
+			else cout << v[i] << " ";
+		}
 		cout << endl;
 
 		setVetor(v);
@@ -101,7 +121,7 @@ int Cache::mapeamentoCache(int end){
 		cerr << "Mapeamento nao reconhecido! Abortando operacoes..." << endl;
 		exit(1);
 	}
-	return 0;
+	return mapeado;
 }
 
 //Política de substituição (1 – Aleatório; 2 – FIFO; 3 – LFU; 4 – LRU)

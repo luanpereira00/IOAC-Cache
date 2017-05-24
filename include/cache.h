@@ -10,6 +10,8 @@ private:
 	int vias;
 	int polSubstituicao;
 	int polEscrita;
+	int hit;
+	int miss;
 	int* vetor;
 
 public:
@@ -23,6 +25,8 @@ public:
 	int getVias();
 	int getSubstituicao();
 	int getEscrita();
+	int getHit();
+	int getMiss();
 	int* getVetor();
 
 	void setPalavras(int p);
@@ -32,6 +36,8 @@ public:
 	void setVias(int v);
 	void setSubstituicao(int s);
 	void setEscrita(int e);
+	void setHit(int h);
+	void setMiss(int ms);
 	void setVetor(int* vt);
 
 	

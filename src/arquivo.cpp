@@ -21,7 +21,7 @@ void abrirArquivo(ifstream *arquivo){
 	string arq;
 	//cout << "Digite o endereco do arquivo: ";
 	//cin >> arq;
-	arq = "dados.txt";
+	arq = "./data/dados.txt";
 
 	arquivo->open(arq);
 	if(!(*arquivo)){

@@ -13,6 +13,7 @@ using std::ifstream;
 #include "cache.h"
 
 int main (){
+	srand(time(NULL));
 	ifstream arquivo;
 	Cache dados;
 	abrirArquivo(&arquivo);
@@ -30,17 +31,23 @@ int main (){
 	cout << "Escrita: 		-> " << dados.getEscrita() << endl;
 
 	int* v = new int[dados.getLinhas()];
-	for(int i=0; i<dados.getLinhas(); i++) v[i]=-1;
-
+	int* f = new int[dados.getLinhas()];
+	for(int i=0; i<dados.getLinhas(); i++) {
+		v[i]=-1;
+		f[i]=0;
+	}
 	dados.setVetor(v);
+	dados.setFreq(f);
+
 	dados.mainCache();
 
 	cout << "Hits:	-> " << dados.getHit() << endl;
 	cout << "Miss: 	-> " << dados.getMiss() << endl;
-	float porcentagem = (1.0*dados.getHit()/(1.0*dados.getHit()+1.0*dados.getMiss()));
-	cout << "Porcentagem de acertos: " << porcentagem*100 << "%" << endl;
-
-
+	cout << "Total:  -> " << dados.getHit()+dados.getMiss() << endl;
+	if(dados.getHit()+dados.getMiss()>0) {
+		float porcentagem = (1.0*dados.getHit()/(1.0*dados.getHit()+1.0*dados.getMiss()));
+		cout << "Porcentagem de acertos: " << porcentagem*100 << "%" << endl;
+	}
 
 	cout << "Encerrando simulador..." << endl;
 	return 0;

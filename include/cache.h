@@ -12,6 +12,7 @@ private:
 	int polEscrita;
 	int hit;
 	int miss;
+	int* freq;
 	int* vetor;
 
 public:
@@ -27,6 +28,7 @@ public:
 	int getEscrita();
 	int getHit();
 	int getMiss();
+	int* getFreq();
 	int* getVetor();
 
 	void setPalavras(int p);
@@ -38,6 +40,7 @@ public:
 	void setEscrita(int e);
 	void setHit(int h);
 	void setMiss(int ms);
+	void setFreq(int* fr);
 	void setVetor(int* vt);
 
 	

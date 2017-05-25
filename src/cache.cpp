@@ -37,6 +37,7 @@ int Cache::getHit()					{ return hit;				}
 int Cache::getMiss()				{ return miss;				}
 int* Cache::getFreq()				{ return freq;				}
 int* Cache::getVetor()				{ return vetor;				}
+int** Cache::getNWay()				{ return NWay;				}
 
 void Cache::setPalavras(int p)		{ qtdPalavras = p; 		}
 void Cache::setLinhas(int l)		{ qtdLinhas = l; 		}
@@ -140,6 +141,13 @@ int Cache::substituicaoCache(int end){
 	bool freeFlag=false;
 	int aux=-1;
 
+	if(4==getSubstituicao()){
+		for (int i=0; i<getLinhas(); i++) {
+			f[i]--;
+			if(f[i]<0) f[i]=0;
+		}
+	}	
+
 	for(int i=0; i<getLinhas(); i++){
 		if(v[i]==end){
 			cout << endl << endl << " -> --- HIT ---" << endl << endl;
@@ -161,6 +169,7 @@ int Cache::substituicaoCache(int end){
 	}
 	cout << endl << endl << " -> --- MISS ---" << endl << endl;
 	setMiss(getMiss()+1);
+
 	if(freeFlag) {
 		v[aux]=end;
 		setVetor(v);
@@ -176,10 +185,7 @@ int Cache::substituicaoCache(int end){
 			setFreq(f);
 		}
 		if(4==getSubstituicao()){
-			for (int i=0; i<getLinhas(); i++) {
-				f[i]--;
-				if(f[i]<0) f[i]=0;
-			}
+			f[aux]=getLinhas();
 			setFreq(f);
 		}
 		return aux;
@@ -204,9 +210,6 @@ int Cache::substituicaoCache(int end){
 			}
 			v[auxI]=end;
 			f[auxI]=getLinhas();
-			for (int i=0; i<getLinhas(); i++) {
-				f[i]--;
-			}
 			cout << endl;
 			setVetor(v);
 			setFreq(f);
@@ -261,9 +264,10 @@ int Cache::viasCache(int end){
 
 	if(getVias()>0){
 		cout << "Vias" << endl;
+		//matriz
+		//bloco da principal indica a via e o bloco
 
 		//Sem Politica de Substituicao
-
 	} else {
 		cerr << "Quantidade de vias nao reconhecidas! Abortando operacoes..." << endl;
 		exit(1);

@@ -30,19 +30,9 @@ int main (){
 	cout << "Substituicao: 		-> " << dados.getSubstituicao() << endl;
 	cout << "Escrita: 		-> " << dados.getEscrita() << endl;
 
-	int* v = new int[dados.getLinhas()];
-	int* f = new int[dados.getLinhas()];
-	for(int i=0; i<dados.getLinhas(); i++) {
-		v[i]=-1;
-		f[i]=0;
-	}
-	if(dados.getSubstituicao()==4) {
-		for(int i=0; i<dados.getLinhas(); i++) {
-			f[i]=dados.getSubstituicao();
-		}
-	}
-	dados.setVetor(v);
-	dados.setFreq(f);
+	
+	dados.criar();
+	
 
 	dados.mainCache();
 	cout << "===========================================" << endl;

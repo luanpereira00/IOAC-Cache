@@ -14,6 +14,8 @@ private:
 	int miss;
 	int* freq;
 	int* vetor;
+	int** matriz;
+	int** freqMatriz;
 
 public:
 	Cache();
@@ -30,6 +32,8 @@ public:
 	int getMiss();
 	int* getFreq();
 	int* getVetor();
+	int** getMatriz();
+	int** getFreqMatriz();
 
 	void setPalavras(int p);
 	void setLinhas(int l);
@@ -42,11 +46,16 @@ public:
 	void setMiss(int ms);
 	void setFreq(int* fr);
 	void setVetor(int* vt);
+	void setMatriz(int **m);
+	void setFreqMatriz(int **fm);
 
 	
 	void mainCache();
 	void exibirCache();
 	void exibirFreq();
+	void exibirCacheMatriz();
+	void exibirFreqMatriz();
+	void criar();
 
 	int solicitarEndereco();
 

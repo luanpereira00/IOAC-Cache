@@ -22,7 +22,17 @@ Cache::Cache(){
 	/** Faz nada */
 }
 Cache::~Cache(){
-	delete[] vetor;
+	if(getMapeamento()==3){
+		for(int i=0; i<getVias(); i++) delete[] matriz[i];
+		delete[] matriz;
+		for(int i=0; i<getVias(); i++) delete[] freqMatriz[i];
+		delete[] freqMatriz;
+	}
+	else {
+		delete[] vetor;
+		delete[] freq;
+	}
+
 	/** Faz nada */
 }
 
@@ -37,7 +47,8 @@ int Cache::getHit()					{ return hit;				}
 int Cache::getMiss()				{ return miss;				}
 int* Cache::getFreq()				{ return freq;				}
 int* Cache::getVetor()				{ return vetor;				}
-int** Cache::getNWay()				{ return NWay;				}
+int** Cache::getMatriz()			{ return matriz;			}
+int** Cache::getFreqMatriz()		{ return freqMatriz;		}
 
 void Cache::setPalavras(int p)		{ qtdPalavras = p; 		}
 void Cache::setLinhas(int l)		{ qtdLinhas = l; 		}
@@ -50,6 +61,8 @@ void Cache::setHit(int h)			{ hit = h;				}
 void Cache::setMiss(int ms)			{ miss = ms;			}
 void Cache::setFreq(int* fr)		{ freq = fr; 			}
 void Cache::setVetor(int* vt)		{ vetor = vt; 			}
+void Cache::setMatriz(int** m)		{ matriz = m;			}
+void Cache::setFreqMatriz(int** fm)	{ freqMatriz = fm;		}
 
 
 int Cache::memPalavras(){
@@ -84,7 +97,12 @@ void Cache::mainCache(){
 		if(end==-1) return;
 
 		cout << "Bloco da principal: " << calcBlocoPrincipal(end) << endl;
-		cout << "Mapeado no bloco " << mapeamentoCache(calcBlocoPrincipal(end)) << " da memoria cache" << endl;
+		if(getMapeamento()==3){
+			cout << mapeamentoCache(calcBlocoPrincipal(end)) << endl;
+		} else {
+			
+			cout << "Mapeado no bloco " << mapeamentoCache(calcBlocoPrincipal(end)) << " da memoria cache" << endl;
+		}
 	}
 }
 //Mapeamento (1 – Direto; 2 – Totalmente Associativo; 3 – Parcialmente Associativo)
@@ -259,11 +277,47 @@ int Cache::substituicaoCache(int end){
 	return -1;
 }
 
+void Cache::criar(){
+	if(getMapeamento()==3){
+		int **m = new int*[getVias()];
+		for(int i=0; i<getVias(); i++) m[i]=new int[getLinhas()];
+
+		int **fm = new int*[getVias()];
+		for(int i=0; i<getVias(); i++) fm[i]=new int[getLinhas()];
+
+		for(int i=0; i<getVias(); i++){
+			for(int j=0; j<getLinhas(); j++){
+				m[i][j]=-1;
+				fm[i][j]=0;
+			}
+		}
+		setMatriz(m);
+		setFreqMatriz(fm);
+
+	} else {
+		int* v = new int[getLinhas()];
+		int* f = new int[getLinhas()];
+		for(int i=0; i<getLinhas(); i++) {
+			v[i]=-1;
+			f[i]=0;
+		}
+		if(getSubstituicao()==4) {
+			for(int i=0; i<getLinhas(); i++) {
+				f[i]=getSubstituicao();
+			}
+		}
+		setVetor(v);
+		setFreq(f);
+	}
+}
+
 //Num de conjuntos
 int Cache::viasCache(int end){
 
 	if(getVias()>0){
 		cout << "Vias" << endl;
+		exibirCacheMatriz();
+		exibirFreqMatriz();
 		//matriz
 		//bloco da principal indica a via e o bloco
 
@@ -307,4 +361,44 @@ void Cache::exibirFreq(){
 		cout << setw(2) << i << " ";
 	}
 	cout << "] -> Numero do bloco da cache" << endl << endl;
+}
+
+void Cache::exibirCacheMatriz(){
+	int **m = getMatriz();
+	cout << "------- Cache -------" <<endl;
+	for(int i=0; i<getVias(); i++){
+		cout << "[ ";
+		for (int j=0; j<getLinhas(); j++) {
+			if(m[i][j]==-1) cout << "__";
+			else cout << setw(2) << m[i][j];
+
+			cout << " ";
+		}
+		cout << "] -> Via "<< i << endl;
+	}
+	
+	cout << "[ ";
+	for (int i=0; i<getLinhas(); i++) {
+		cout << setw(2) << i << " ";
+	}
+	cout << "] -> Numero de blocos da cache"<< endl << endl;
+}
+void Cache::exibirFreqMatriz(){
+	int **m = getMatriz();
+	int **fm = getFreqMatriz();
+	cout << "------- Frequencia -------" <<endl;
+	for(int i=0; i<getVias(); i++){
+		cout << "[ ";
+		for (int j=0; j<getLinhas(); j++) {
+			if(m[i][j]>=0)cout << setw(2) << fm[i][j] << " ";
+			else cout << "__ ";
+		}
+		cout << "] -> Via "<< i << endl;
+	}
+
+	cout << "[ ";
+	for (int i=0; i<getLinhas(); i++) {
+		cout << setw(2) << i << " ";
+	}
+	cout << "] -> Numero de blocos da cache"<< endl << endl;
 }

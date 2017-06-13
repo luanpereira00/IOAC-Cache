@@ -64,6 +64,7 @@ public:
 	int viasCache(int end);
 	int mapeamentoCache(int end);
 	int substituicaoCache(int end);
+	int substituicaoMatrizCache(int end, int via);
 	int calcBlocoPrincipal(int end);
 };
 

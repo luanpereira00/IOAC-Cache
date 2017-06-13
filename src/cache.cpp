@@ -277,6 +277,44 @@ int Cache::substituicaoCache(int end){
 	return -1;
 }
 
+int Cache::substituicaoMatrizCache(int end, int via){
+	if(1==getSubstituicao()) cout << "Substituicao Aleatoria" << endl;
+	if(2==getSubstituicao()) cout << "Substituicao FIFO" << endl;
+	if(3==getSubstituicao()) cout << "Substituicao LFU" << endl;
+	if(4==getSubstituicao()) cout << "Substituicao LRU" << endl;
+
+	cout << "Buscando o bloco " << end;
+	int** m = getMatriz();
+	int** fm;
+	//bool freeFlag=false;
+	int aux=-1;
+
+	for(int i=0; i<getLinhas(); i++){
+		if(m[via][i]==end) {
+			cout << endl << endl << " -> --- HIT ---" << endl << endl;
+			setHit(getHit()+1);
+			return i;
+		}
+	}
+	cout << endl << endl << " -> --- MISS ---" << endl << endl;
+	setMiss(getMiss()+1);
+	if(1==getSubstituicao()) {
+		aux = rand() % getLinhas();
+		m[via][aux] = end;
+	} else if (2==getSubstituicao()){
+
+	} else if (3==getSubstituicao()){
+
+	} else if (4==getSubstituicao()){
+
+	} else {
+		cerr << "POLITICA DE SUBSTITUICAO NAO ENCONTRADA... ABORTANTO OPERACOES!" << endl;
+		exit(1);
+	}
+
+	return aux;
+}
+
 void Cache::criar(){
 	if(getMapeamento()==3){
 		int **m = new int*[getVias()];
@@ -316,8 +354,11 @@ int Cache::viasCache(int end){
 
 	if(getVias()>0){
 		cout << "Vias" << endl;
+		cout << "Mapeado no bloco " << substituicaoMatrizCache(end, end%getVias()) << " da via " << end%getVias() << endl;
 		exibirCacheMatriz();
-		exibirFreqMatriz();
+	//	exibirFreqMatriz();
+		
+		cout << end << "  " << end % getLinhas() << endl;;
 		//matriz
 		//bloco da principal indica a via e o bloco
 

@@ -30,11 +30,9 @@ int main (){
 	cout << "Substituicao: 		-> " << dados.getSubstituicao() << endl;
 	cout << "Escrita: 		-> " << dados.getEscrita() << endl;
 
-	
 	dados.criar();
-	
-
 	dados.mainCache();
+	
 	cout << "===========================================" << endl;
 
 	cout << "Hit:	-> " << dados.getHit() << endl;

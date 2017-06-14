@@ -28,7 +28,6 @@ int main (){
 	cout << "Mapeamento: 		-> " << dados.getMapeamento() << endl;
 	cout << "Vias: 			-> " << dados.getVias() << endl;
 	cout << "Substituicao: 		-> " << dados.getSubstituicao() << endl;
-	cout << "Escrita: 		-> " << dados.getEscrita() << endl;
 
 	dados.criar();
 	dados.mainCache();

@@ -54,7 +54,4 @@ void loadData(Cache* dados, ifstream* arquivo){
 
 	getline(*arquivo, aux);
 	dados->setSubstituicao(atoi(aux.c_str()));
-
-	getline(*arquivo, aux);
-	dados->setEscrita(atoi(aux.c_str()));
 }

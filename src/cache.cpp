@@ -42,7 +42,6 @@ int Cache::getPrincipal()			{ return memPrincipal;		}
 int Cache::getMapeamento()			{ return mapeamento;		}
 int Cache::getVias()				{ return vias;				}
 int Cache::getSubstituicao()		{ return polSubstituicao;	}
-int Cache::getEscrita()				{ return polEscrita;		}
 int Cache::getHit()					{ return hit;				}
 int Cache::getMiss()				{ return miss;				}
 int* Cache::getFreq()				{ return freq;				}
@@ -56,7 +55,6 @@ void Cache::setPrincipal(int m)		{ memPrincipal = m; 	}
 void Cache::setMapeamento(int mp)	{ mapeamento = mp; 		}
 void Cache::setVias(int v)			{ vias = v; 			}
 void Cache::setSubstituicao(int s)	{ polSubstituicao = s; 	}
-void Cache::setEscrita(int e)		{ polEscrita = e; 		}
 void Cache::setHit(int h)			{ hit = h;				}
 void Cache::setMiss(int ms)			{ miss = ms;			}
 void Cache::setFreq(int* fr)		{ freq = fr; 			}
@@ -127,7 +125,7 @@ int Cache::mapeamentoCache(int end){
 		//Sem Politica de Substituicao
 	} else if (2==getMapeamento()){
 		cout << "Mapeamento Totalmente Associativo" << endl;
-		mapeado = substituicaoCache(end);
+		mapeado = substituicaoCache(getVetor(), getFreq(), end);
 		exibirCache();
 		if(1!=getSubstituicao()) exibirFreq();
 
@@ -146,7 +144,7 @@ int Cache::mapeamentoCache(int end){
 }
 
 //Política de substituição (1 – Aleatório; 2 – FIFO; 3 – LFU; 4 – LRU)
-int Cache::substituicaoCache(int end){
+int Cache::substituicaoCache(int *v, int *f, int end){
 	//cout << "Substituicao FIFO" << endl;
 	//Comum a todos
 	if(1==getSubstituicao()) cout << "Substituicao Aleatoria" << endl;
@@ -154,8 +152,8 @@ int Cache::substituicaoCache(int end){
 	if(3==getSubstituicao()) cout << "Substituicao LFU" << endl;
 	if(4==getSubstituicao()) cout << "Substituicao LRU" << endl;
 	cout << "Buscando o bloco " << end;
-	int* v = getVetor();
-	int* f = getFreq();
+	//int* v = getVetor();
+	//int* f = getFreq();
 	bool freeFlag=false;
 	int aux=-1;
 
@@ -276,7 +274,7 @@ int Cache::substituicaoCache(int end){
 	
 	return -1;
 }
-
+/*
 int Cache::substituicaoMatrizCache(int end, int via){
 	if(1==getSubstituicao()) cout << "Substituicao Aleatoria" << endl;
 	if(2==getSubstituicao()) cout << "Substituicao FIFO" << endl;
@@ -313,7 +311,7 @@ int Cache::substituicaoMatrizCache(int end, int via){
 	}
 
 	return aux;
-}
+}*/
 
 void Cache::criar(){
 	if(getMapeamento()==3){
@@ -351,12 +349,13 @@ void Cache::criar(){
 
 //Num de conjuntos
 int Cache::viasCache(int end){
-
+	int **m = getMatriz();
+	int **fm = getFreqMatriz();
 	if(getVias()>0){
 		cout << "Vias" << endl;
-		cout << "Mapeado no bloco " << substituicaoMatrizCache(end, end%getVias()) << " da via " << end%getVias() << endl;
+		cout << "Mapeado no bloco " << substituicaoCache(m[end%getVias()], fm[end%getVias()], end) << " da via " << end%getVias() << endl;
 		exibirCacheMatriz();
-	//	exibirFreqMatriz();
+		if(getSubstituicao()==3 or getSubstituicao()==2 or getSubstituicao()==4) exibirFreqMatriz();
 		
 		cout << end << "  " << end % getLinhas() << endl;;
 		//matriz

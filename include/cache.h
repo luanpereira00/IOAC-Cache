@@ -9,7 +9,6 @@ private:
 	int mapeamento;
 	int vias;
 	int polSubstituicao;
-	int polEscrita;
 	int hit;
 	int miss;
 	int* freq;
@@ -27,7 +26,6 @@ public:
 	int getMapeamento();
 	int getVias();
 	int getSubstituicao();
-	int getEscrita();
 	int getHit();
 	int getMiss();
 	int* getFreq();
@@ -41,7 +39,6 @@ public:
 	void setMapeamento(int mp);
 	void setVias(int v);
 	void setSubstituicao(int s);
-	void setEscrita(int e);
 	void setHit(int h);
 	void setMiss(int ms);
 	void setFreq(int* fr);
@@ -63,7 +60,7 @@ public:
 
 	int viasCache(int end);
 	int mapeamentoCache(int end);
-	int substituicaoCache(int end);
+	int substituicaoCache(int *v, int *f, int end);
 	int substituicaoMatrizCache(int end, int via);
 	int calcBlocoPrincipal(int end);
 };

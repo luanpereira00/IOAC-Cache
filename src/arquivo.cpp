@@ -1,3 +1,11 @@
+/**
+ * @file	arquivo.cpp
+ * @brief	Implementacao de funcoes que envolvem arquivos e cache
+ * @author	Luan Pereira (luanpereira00@outlook.com)
+ * @since	01/06/2017
+ * @date	01/06/2017
+ */
+
 #include <iostream>
 using std::cout;
 using std::cerr;
@@ -17,11 +25,12 @@ using std::exit;
 #include "arquivo.h"
 #include "cache.h"
 
+/**@brief Funcao que abre o arquivo e verifica se eh valido */
 void abrirArquivo(ifstream *arquivo){
 	string arq;
-	//cout << "Digite o endereco do arquivo: ";
-	//cin >> arq;
-	arq = "./data/dados.txt";
+	cout << "Digite o endereco do arquivo: ";
+	cin >> arq;
+	//arq = "./data/dados.txt";
 
 	arquivo->open(arq);
 	if(!(*arquivo)){
@@ -34,6 +43,7 @@ void abrirArquivo(ifstream *arquivo){
 
 }
 
+/**@brief Funcao que carrega os dados na Cache */
 void loadData(Cache* dados, ifstream* arquivo){
 	string aux;
 

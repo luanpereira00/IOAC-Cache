@@ -1,3 +1,10 @@
+/**
+ * @file	cache.cpp
+ * @brief	Implementacao da classe Cache para representar uma memoria Cache
+ * @author	Luan Pereira (luanpereira00@outlook.com)
+ * @since	01/06/2017
+ * @date	01/06/2017
+ */
 #include <iostream>
 using std::cout;
 using std::cerr;
@@ -16,11 +23,14 @@ using std::setw;
 
 #include "cache.h"
 
+/** @brief Construtor padrao */
 Cache::Cache(){
 	miss=0;
 	hit=0;
 	/** Faz nada */
 }
+
+/*@brief Destrutor padrao */
 Cache::~Cache(){
 	if(getMapeamento()==3){
 		for(int i=0; i<getVias(); i++) delete[] matriz[i];
@@ -36,37 +46,98 @@ Cache::~Cache(){
 	/** Faz nada */
 }
 
+/**@return Retorna a quantidade de palavras por bloco*/
 int Cache::getPalavras()			{ return qtdPalavras;		}
+
+/**@return Retorna a quantidade de linhas da cache */
 int Cache::getLinhas()				{ return qtdLinhas;			}
+
+/**@return Retorna a quantidade de blocos da memoria principal */
 int Cache::getPrincipal()			{ return memPrincipal;		}
+
+/**@return Retorna o tipo de mapeamento */
 int Cache::getMapeamento()			{ return mapeamento;		}
+
+/**@return Retorna a quantidade de vias (N-way) */
 int Cache::getVias()				{ return vias;				}
+
+/**@return Retorna a politica de substituicao */
 int Cache::getSubstituicao()		{ return polSubstituicao;	}
+
+/**@return Retorna a quantidade de hits*/
 int Cache::getHit()					{ return hit;				}
+
+/**@return Retorna a quantidade de misses */
 int Cache::getMiss()				{ return miss;				}
+
+/**@return Retorna o vetor de frequencia*/
 int* Cache::getFreq()				{ return freq;				}
+
+/**@return Retorna o vetor de cache */
 int* Cache::getVetor()				{ return vetor;				}
+
+/**@return Retorna matriz de cache (N-way)*/
 int** Cache::getMatriz()			{ return matriz;			}
+
+/**@return Retorna a matriz de frequencia (N-way)*/
 int** Cache::getFreqMatriz()		{ return freqMatriz;		}
 
+/**@brief Atualiza a quantidade de palavras
+* @param p A nova quantidade de palavras */
 void Cache::setPalavras(int p)		{ qtdPalavras = p; 		}
+
+/**@brief Atualiza a quantidade de linhas
+	* @param l A nova quantidade de linhas*/
 void Cache::setLinhas(int l)		{ qtdLinhas = l; 		}
+
+/**@brief Atualiza a quantidade de blocos da memoria principal
+	* @param m A nova quantidade de blocos da memoria principal*/
 void Cache::setPrincipal(int m)		{ memPrincipal = m; 	}
+
+/**@brief Atualiza a nova forma de mapeamento
+	* @param mp A nova nova forma de mapeamento*/
 void Cache::setMapeamento(int mp)	{ mapeamento = mp; 		}
+
+/**@brief Atualiza a quantidade de vias (N-way)
+	* @param v A nova quantidade de vias (N-way)*/
 void Cache::setVias(int v)			{ vias = v; 			}
+
+/**@brief Atualiza a politica de substituicao 
+	* @param s A nova politica de substituicao */
 void Cache::setSubstituicao(int s)	{ polSubstituicao = s; 	}
+
+/**@brief Atualiza a quantidade de hits
+	* @param h A nova quantidade de hits*/
 void Cache::setHit(int h)			{ hit = h;				}
+
+/**@brief Atualiza a quantidade de misses
+	* @param ms A nova quantidade de misses*/
 void Cache::setMiss(int ms)			{ miss = ms;			}
+
+/**@brief Atualiza o vetor de frequencia 
+	* @param fr O novo vetor de frequencia */
 void Cache::setFreq(int* fr)		{ freq = fr; 			}
+
+/**@brief Atualiza o vetor de cache 
+	* @param vt O novo vetor de cache */
 void Cache::setVetor(int* vt)		{ vetor = vt; 			}
+
+/**@brief Atualiza a matriz de cache (N-way)
+	* @param m A nova matriz de cache (N-way)*/
 void Cache::setMatriz(int** m)		{ matriz = m;			}
+
+/**@brief Atualiza a matriz de frequencia (N-way) 
+	* @param fm A nova matriz de frequencia (N-way) */
 void Cache::setFreqMatriz(int** fm)	{ freqMatriz = fm;		}
 
-
+/**@brief Funcao que calcula a quantidade maxima de enderecos da memoria da principal
+	*@return Retorna a quantidade maxima de enderecos*/
 int Cache::memPalavras(){
 	return getPalavras()*getPrincipal();
 } 
 
+/**@brief Funcao que solicita o endereco de memoria que sera buscado na cache 
+	*@return Retorna o endereco */
 int Cache::solicitarEndereco(){
 	int end;
 	cout << "===========================================" << endl;
@@ -84,10 +155,14 @@ int Cache::solicitarEndereco(){
 	return end;
 }
 
+/**@brief Funcao que calcula o bloco que o endereco esta na memoria principal
+	*@param end O endereco
+	*@return Retorna o bloco da principal */ 
 int Cache::calcBlocoPrincipal(int end){
 	return ((end - (end % getPalavras()))/getPalavras());
 }
 
+/**@brief Funcao principal que direciona a politica de substituicao, mapeamento, N-way etc. */
 void Cache::mainCache(){
 	short int end=1;
 	while(end>=0 and end<getPalavras()*getPrincipal()){ //MAX_ENDERECO_POSSIVEIS
@@ -103,7 +178,9 @@ void Cache::mainCache(){
 		}
 	}
 }
-//Mapeamento (1 – Direto; 2 – Totalmente Associativo; 3 – Parcialmente Associativo)
+/**@brief Funcao que direciona para qual tipo de mapeamento deve ser executado
+	*@param end O endereco 
+	*@return Retorna o local de substituicao */
 int Cache::mapeamentoCache(int end){
 	int mapeado=-1;
 	if(1==getMapeamento()){
@@ -143,7 +220,19 @@ int Cache::mapeamentoCache(int end){
 	return mapeado;
 }
 
-//Política de substituição (1 – Aleatório; 2 – FIFO; 3 – LFU; 4 – LRU)
+/**@brief Funcao que atualiza o vetor de frequencia para FIFO
+	*@param f O vetor de frequencia */
+void Cache::atualizarFrequenciaFIFO(int *f){	
+	for (int i=0; i<getLinhas(); i++) {
+		f[i]--;
+	}
+}
+
+/**@brief Funcao que direciona para qual tipo de substituicao deve ser executada
+	*@param v O vetor de cache
+	*@param f O vetor de frequencia
+	*@param end O endereco
+	*@return Retorna o local de substituicao */
 int Cache::substituicaoCache(int *v, int *f, int end){
 	//cout << "Substituicao FIFO" << endl;
 	//Comum a todos
@@ -170,11 +259,9 @@ int Cache::substituicaoCache(int *v, int *f, int end){
 			setHit(getHit()+1);
 			if(3==getSubstituicao()){
 				f[i]++;
-				setFreq(f);
 			}
 			if(4==getSubstituicao()){
 				f[i]=getLinhas();
-				setFreq(f);
 			}
 			return i;
 		}
@@ -188,21 +275,15 @@ int Cache::substituicaoCache(int *v, int *f, int end){
 
 	if(freeFlag) {
 		v[aux]=end;
-		setVetor(v);
 		if(2==getSubstituicao()){
 			f[aux]=getLinhas();
-			for (int i=0; i<getLinhas(); i++) {
-				f[i]--;
-			}
-			setFreq(f);
+			atualizarFrequenciaFIFO(f);
 		}
 		if(3==getSubstituicao()){
-			f[aux]++;
-			setFreq(f);
+			f[aux]=1;
 		}
 		if(4==getSubstituicao()){
 			f[aux]=getLinhas();
-			setFreq(f);
 		}
 		return aux;
 	} 
@@ -211,7 +292,6 @@ int Cache::substituicaoCache(int *v, int *f, int end){
 			//RANDOM
 			aux = rand() % getLinhas();
 			v[aux]=end;
-			setVetor(v);
 			return aux;		
 			//Com Politica de Escrita
 		} else if (2==getSubstituicao()){
@@ -226,9 +306,9 @@ int Cache::substituicaoCache(int *v, int *f, int end){
 			}
 			v[auxI]=end;
 			f[auxI]=getLinhas();
+			atualizarFrequenciaFIFO(f);
 			cout << endl;
-			setVetor(v);
-			setFreq(f);
+		
 			return auxI;
 			//Com politica de substituicao e Escrita
 
@@ -244,8 +324,6 @@ int Cache::substituicaoCache(int *v, int *f, int end){
 			}
 			v[auxI]=end;
 			f[auxI]=1;
-			setVetor(v);
-			setFreq(f);
 			return auxI;
 			//Com politica de substituicao e Escrita
 
@@ -261,8 +339,6 @@ int Cache::substituicaoCache(int *v, int *f, int end){
 			}
 			v[auxI]=end;
 			f[auxI]=getLinhas();
-			setVetor(v);
-			setFreq(f);
 			return auxI;
 			//Com politica de substituicao e Escrita
 
@@ -274,45 +350,9 @@ int Cache::substituicaoCache(int *v, int *f, int end){
 	
 	return -1;
 }
-/*
-int Cache::substituicaoMatrizCache(int end, int via){
-	if(1==getSubstituicao()) cout << "Substituicao Aleatoria" << endl;
-	if(2==getSubstituicao()) cout << "Substituicao FIFO" << endl;
-	if(3==getSubstituicao()) cout << "Substituicao LFU" << endl;
-	if(4==getSubstituicao()) cout << "Substituicao LRU" << endl;
 
-	cout << "Buscando o bloco " << end;
-	int** m = getMatriz();
-	int** fm;
-	//bool freeFlag=false;
-	int aux=-1;
 
-	for(int i=0; i<getLinhas(); i++){
-		if(m[via][i]==end) {
-			cout << endl << endl << " -> --- HIT ---" << endl << endl;
-			setHit(getHit()+1);
-			return i;
-		}
-	}
-	cout << endl << endl << " -> --- MISS ---" << endl << endl;
-	setMiss(getMiss()+1);
-	if(1==getSubstituicao()) {
-		aux = rand() % getLinhas();
-		m[via][aux] = end;
-	} else if (2==getSubstituicao()){
-
-	} else if (3==getSubstituicao()){
-
-	} else if (4==getSubstituicao()){
-
-	} else {
-		cerr << "POLITICA DE SUBSTITUICAO NAO ENCONTRADA... ABORTANTO OPERACOES!" << endl;
-		exit(1);
-	}
-
-	return aux;
-}*/
-
+/**@brief Funcao que realiza as alocacoes dinamicas necessarias e inicializa os vetores com valores default */
 void Cache::criar(){
 	if(getMapeamento()==3){
 		int **m = new int*[getVias()];
@@ -347,7 +387,9 @@ void Cache::criar(){
 	}
 }
 
-//Num de conjuntos
+/**@brief Funcao que direciona para qual via o endereco deve ser substituido 
+	*@param end O endereco 
+	*@return Retorna o local de substituicao */
 int Cache::viasCache(int end){
 	int **m = getMatriz();
 	int **fm = getFreqMatriz();
@@ -357,7 +399,7 @@ int Cache::viasCache(int end){
 		exibirCacheMatriz();
 		if(getSubstituicao()==3 or getSubstituicao()==2 or getSubstituicao()==4) exibirFreqMatriz();
 		
-		cout << end << "  " << end % getLinhas() << endl;;
+		//cout << end << "  " << end % getLinhas() << endl;;
 		//matriz
 		//bloco da principal indica a via e o bloco
 
@@ -369,6 +411,7 @@ int Cache::viasCache(int end){
 	return 0;
 }
 
+/**@brief Funcao que imprime o vetor de cache */
 void Cache::exibirCache(){
 	int *v = getVetor();
 	cout << "------- Cache -------" <<endl;
@@ -386,6 +429,8 @@ void Cache::exibirCache(){
 	}
 	cout << "] -> Blocos da cache"<< endl << endl;
 }
+
+/**@brief Funcao que imprime o vetor de frequencia */
 void Cache::exibirFreq(){
 	int *f = getFreq();
 	int *v = getVetor();
@@ -403,6 +448,7 @@ void Cache::exibirFreq(){
 	cout << "] -> Numero do bloco da cache" << endl << endl;
 }
 
+/**@brief Funcao que imprime a matriz de cache (N-way)*/
 void Cache::exibirCacheMatriz(){
 	int **m = getMatriz();
 	cout << "------- Cache -------" <<endl;
@@ -423,6 +469,8 @@ void Cache::exibirCacheMatriz(){
 	}
 	cout << "] -> Numero de blocos da cache"<< endl << endl;
 }
+
+/**@brief Funcao que a matriz de frequencia (N-way)*/
 void Cache::exibirFreqMatriz(){
 	int **m = getMatriz();
 	int **fm = getFreqMatriz();

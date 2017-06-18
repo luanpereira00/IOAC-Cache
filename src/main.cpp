@@ -1,3 +1,10 @@
+/**
+ * @file	main.cpp
+ * @brief	Implementacao da funcao principal do programa
+ * @author	Luan Pereira (luanpereira00@outlook.com)
+ * @since	01/06/2017
+ * @date	01/06/2017
+ */
 #include <iostream>
 using std::cout;
 using std::endl;
@@ -12,6 +19,7 @@ using std::ifstream;
 #include "arquivo.h"
 #include "cache.h"
 
+/**@brief Funcao principal */
 int main (){
 	srand(time(NULL));
 	ifstream arquivo;
